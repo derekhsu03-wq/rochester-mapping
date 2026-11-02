@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rochester | Building permit timeline</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="assets/permit.css">
+  <script defer src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script defer src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+  <script defer src="data/permits-data.js"></script>
+  <script defer src="assets/permit-timeline.js"></script>
+  <script defer src="assets/permit.js"></script>
+</head>
+<body>
+  <header>
+    <div>
+      <p class="eyebrow">ROCHESTER, MINNESOTA</p>
+      <h1>Building Rochester, visualized throughout the years</h1>
+      <p class="subtitle">Explore approved permit records year by year</p>
+    </div>
+  </header>
+  <main>
+    <p id="error" class="error" role="alert" hidden></p>
+    <section class="timeline" aria-label="Permit timeline" id="timeline-panel">
+      <div class="timeline-heading">
+        <div>
+          <p class="eyebrow">DATE OF PERMIT</p>
+          <h2><time id="current-date">Loading data...</time></h2>
+        </div>
+        <p id="step-count"></p>
+      </div>
+      <div class="controls">
+        <button id="first" type="button" aria-label="First date" disabled>First</button>
+        <button id="previous" type="button" aria-label="Previous permit date" disabled>Previous</button>
+        <button id="play" type="button" aria-pressed="false" disabled>Play</button>
+        <button id="next" type="button" aria-label="Next permit date" disabled>Next</button>
+        <button id="last" type="button" aria-label="Last date" disabled>Last</button>
+        <label class="jump">Jump to date <select id="date-select" disabled></select></label>
+      </div>
+      <label class="sr-only" for="date-slider">Date of permit (one step per unique date)</label>
+      <input id="date-slider" type="range" min="0" max="0" step="1" value="0" disabled>
+      <div class="range-labels"><span id="start-date"></span><span id="end-date"></span></div>
+    </section>
+    <div class="workspace">
+      <section class="map-panel" aria-label="Map of permitted properties through the selected date">
+        <div id="map" aria-label="Map of Rochester permit locations"></div>
+        <div class="map-legend">
+          <span class="legend-item"><span class="dot new"></span>Selected property</span>
+          <span class="legend-item"><span class="dot year"></span>Property in <span class="label-year"></span></span>
+          <span class="legend-item"><span class="dot earlier"></span>All properties up to this date</span>
+        </div>
+      </section>
+      <aside aria-label="Permit summary and selected date records">
+        <section class="summary" aria-live="polite" aria-atomic="true">
+          <h2><span id="summary-year"></span> through <span id="summary-date"></span></h2>
+          <dl class="metrics">
+            <div><dt>Permit records in <span class="label-year"></span></dt><dd id="total-records">-</dd></div>
+            <div><dt>Reported units in <span class="label-year"></span></dt><dd id="total-units">-</dd></div>
+            <div class="wide"><dt>Total reported valuation in <span class="label-year"></span></dt><dd id="total-valuation">-</dd></div>
+          </dl>
+        </section>
+        <section class="daily">
+          <h2>On this date <span id="daily-count" class="badge"></span></h2>
+          <ul id="daily-records" class="record-list"></ul>
+        </section>
+      </aside>
+    </div>
+    <section class="annual" aria-label="Reported units and valuation by year">
+      <div class="annual-heading">
+        <h2>Reported units and valuation by year</h2>
+        <p class="subtitle">Full annual totals</p>
+      </div>
+      <div id="annual-chart"></div>
+    </section>
+    <footer>
+      <p><strong>What this map shows:</strong> All permit records filed with the City of Rochester. Reported units and valuation are summed without inferring missing values. Totals cover only the selected calendar year up to the selected date, while the map shows every property permitted up to that date. Locations were mapped by its latitude and longitude.</p>
+    </footer>
+  </main>
+</body>
+</html>
